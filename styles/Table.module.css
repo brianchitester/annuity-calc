@@ -1,0 +1,19 @@
+.calcTable {
+  border-collapse: collapse;
+}
+.calcTable th,
+.calcTable td {
+  padding: 0.2em 1em;
+}
+
+.calcTable td {
+  min-width: 120px;
+}
+
+.calcTable th {
+  text-align: left;
+}
+
+.borderThick {
+  border: 1px solid black;
+}

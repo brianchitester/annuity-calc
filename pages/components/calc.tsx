@@ -1,43 +1,101 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import styles from "../../styles/Table.module.css";
 
+const usd = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+});
+const formatPercentage = (value: number): string => {
+  return `${value.toFixed(2)}%`;
+};
+
 export const Calc: FC = () => {
-  const usd = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  });
-  const formatPercentage = (value: number): string => {
-    return `${value}%`;
-  };
+  const [flatRatePercentage, setFlatRatePercentage] = useState(0.95);
+  const [flatRateInvestment, setFlatRateInvestment] = useState(0);
+  const [flatRateReturn, setFlatRateReturn] = useState(0);
+
+  const [ppiInitialRatePercentage, setPpiInitialRatePercentage] =
+    useState(0.48);
+  const [ppiInitialRateInvestment, setPpiInitialRateInvestment] = useState(0);
+  const [ppiInitialRateReturn, setPpiInitialRateReturn] = useState(0);
+
+  const [ppiAccountRatePercentage, setPpiAccountRatePercentage] =
+    useState(0.47);
+  const [ppiAccountRateInvestment, setPpiAccountRateInvestment] = useState(0);
+  const [ppiAccountRateReturn, setPpiAccountRateReturn] = useState(0);
+
+  useEffect(() => {
+    setFlatRateReturn((flatRatePercentage / 100) * flatRateInvestment);
+  }, [flatRateInvestment]);
+
+  useEffect(() => {
+    setPpiInitialRateReturn(
+      (ppiInitialRatePercentage / 100) * ppiInitialRateInvestment
+    );
+  }, [ppiInitialRateInvestment]);
+
+  useEffect(() => {
+    setPpiAccountRateReturn(
+      (ppiAccountRatePercentage / 100) * ppiAccountRateInvestment
+    );
+  }, [ppiAccountRateInvestment]);
 
   return (
     <table className={styles.calcTable}>
       <tr>
         <th>flat rate</th>
-        <td>{formatPercentage(0.95)}</td>
-        <td>{usd.format(1000)}</td>
-        <td>$1000</td>
+        <td>{formatPercentage(flatRatePercentage)}</td>
+        <td>
+          <input
+            type="number"
+            value={flatRateInvestment}
+            onChange={(e) => setFlatRateInvestment(Number(e.target.value))}
+          />
+        </td>
+        <td>{usd.format(flatRateReturn)}</td>
       </tr>
       <tr>
         <th>PPI</th>
       </tr>
       <tr className={styles.borderThick}>
         <th>initial investment</th>
-        <td>0.48%</td>
-        <td>$1000</td>
-        <td>$1000</td>
+        <td>{formatPercentage(ppiInitialRatePercentage)}</td>
+        <td>
+          <input
+            type="number"
+            value={ppiInitialRateInvestment}
+            onChange={(e) =>
+              setPpiInitialRateInvestment(Number(e.target.value))
+            }
+          />
+        </td>
+        <td>{usd.format(ppiInitialRateReturn)}</td>
       </tr>
       <tr className={styles.borderThick}>
         <th>account value</th>
-        <td>0.47%</td>
-        <td>$1000</td>
-        <td>$1000</td>
+        <td>{formatPercentage(ppiAccountRatePercentage)}</td>
+        <td>
+          <input
+            type="number"
+            value={ppiAccountRateInvestment}
+            onChange={(e) =>
+              setPpiAccountRateInvestment(Number(e.target.value))
+            }
+          />
+        </td>
+        <td>{usd.format(ppiAccountRateReturn)}</td>
       </tr>
       <tr>
         <th>actual rate</th>
-        <td>0.89%</td>
+        <td>
+          {formatPercentage(
+            ((ppiAccountRateReturn + ppiInitialRateReturn) /
+              ppiAccountRateInvestment) *
+              100
+          )}
+        </td>
         <td></td>
-        <td>$123</td>
+        <td>{usd.format(ppiAccountRateReturn + ppiInitialRateReturn)}</td>
       </tr>
       <tr>
         <td></td>
@@ -47,7 +105,7 @@ export const Calc: FC = () => {
       </tr>
       <tr>
         <th>acct performanc</th>
-        <td>$1000</td>
+        <td>15%</td>
       </tr>
     </table>
   );

@@ -5,7 +5,7 @@ export const Footer: FC = () => {
   return (
     <footer className={styles.footer}>
       <a target="_blank" rel="noopener noreferrer">
-        Powered by Angela Chan PFC
+        Powered by Angela Kawai Chan
       </a>
     </footer>
   );

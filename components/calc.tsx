@@ -27,6 +27,8 @@ export const Calc: FC = () => {
 
   const totalReturn = accountValueReturn + yourInvestmentReturn;
 
+  const percentageRate = (totalReturn / accountValue) * 100;
+
   return (
     <table className={styles.calcTable}>
       <tr>
@@ -78,7 +80,7 @@ export const Calc: FC = () => {
       </tr>
       <tr>
         <th>actual rate</th>
-        <td>{formatPercentage((totalReturn / accountValue) * 100)}</td>
+        <td>{formatPercentage(percentageRate === NaN ? percentageRate : 0)}</td>
         <td></td>
         <td>{usd.format(totalReturn)}</td>
       </tr>

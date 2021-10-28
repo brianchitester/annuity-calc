@@ -7,13 +7,18 @@
 }
 
 .calcTable td {
-  min-width: 120px;
+  width: 90px;
 }
 
 .calcTable th {
+  min-width: 120px;
   text-align: left;
 }
 
 .borderThick {
   border: 1px solid black;
+}
+
+.calcTable input {
+  width: 80px;
 }

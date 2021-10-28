@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import styles from "../../styles/Table.module.css";
+import styles from "../styles/Table.module.css";
 import CurrencyInput from "react-currency-input-field";
 
 const usd = new Intl.NumberFormat("en-US", {

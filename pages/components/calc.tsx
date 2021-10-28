@@ -1,5 +1,6 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import styles from "../../styles/Table.module.css";
+import CurrencyInput from "react-currency-input-field";
 
 const usd = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -10,102 +11,76 @@ const formatPercentage = (value: number): string => {
 };
 
 export const Calc: FC = () => {
-  const [flatRatePercentage, setFlatRatePercentage] = useState(0.95);
-  const [flatRateInvestment, setFlatRateInvestment] = useState(0);
-  const [flatRateReturn, setFlatRateReturn] = useState(0);
+  const flatRatePercentage = 0.95;
+  const ppiInitialRatePercentage = 0.48;
+  const accountValuePercentage = 0.47;
+  const [yourInvestment, setYourInvestment] = useState(0);
+  const [accountPerformance, setAccountPerformance] = useState(15);
 
-  const [ppiInitialRatePercentage, setPpiInitialRatePercentage] =
-    useState(0.48);
-  const [ppiInitialRateInvestment, setPpiInitialRateInvestment] = useState(0);
-  const [ppiInitialRateReturn, setPpiInitialRateReturn] = useState(0);
+  const accountValue =
+    yourInvestment + yourInvestment * (accountPerformance / 100);
 
-  const [ppiAccountRatePercentage, setPpiAccountRatePercentage] =
-    useState(0.47);
-  const [ppiAccountRateInvestment, setPpiAccountRateInvestment] = useState(0);
-  const [ppiAccountRateReturn, setPpiAccountRateReturn] = useState(0);
+  const yourInvestmentReturn =
+    yourInvestment * (ppiInitialRatePercentage / 100);
 
-  useEffect(() => {
-    setFlatRateReturn((flatRatePercentage / 100) * flatRateInvestment);
-  }, [flatRateInvestment]);
+  const accountValueReturn = accountValue * (accountValuePercentage / 100);
 
-  useEffect(() => {
-    setPpiInitialRateReturn(
-      (ppiInitialRatePercentage / 100) * ppiInitialRateInvestment
-    );
-  }, [ppiInitialRateInvestment]);
-
-  useEffect(() => {
-    setPpiAccountRateReturn(
-      (ppiAccountRatePercentage / 100) * ppiAccountRateInvestment
-    );
-  }, [ppiAccountRateInvestment]);
+  const totalReturn = accountValueReturn + yourInvestmentReturn;
 
   return (
     <table className={styles.calcTable}>
       <tr>
         <th>flat rate</th>
         <td>{formatPercentage(flatRatePercentage)}</td>
-        <td>
-          <input
-            type="number"
-            value={flatRateInvestment}
-            onChange={(e) => setFlatRateInvestment(Number(e.target.value))}
-          />
-        </td>
-        <td>{usd.format(flatRateReturn)}</td>
+        <td>{usd.format(accountValue)}</td>
+        <td>{usd.format(accountValue * (flatRatePercentage / 100))}</td>
       </tr>
       <tr>
         <th>PPI</th>
       </tr>
       <tr className={styles.borderThick}>
-        <th>initial investment</th>
+        <th>your investment</th>
         <td>{formatPercentage(ppiInitialRatePercentage)}</td>
         <td>
-          <input
-            type="number"
-            value={ppiInitialRateInvestment}
-            onChange={(e) =>
-              setPpiInitialRateInvestment(Number(e.target.value))
-            }
+          <CurrencyInput
+            placeholder="Please enter a number"
+            defaultValue={yourInvestment}
+            prefix={"$"}
+            onValueChange={(value) => setYourInvestment(parseInt(value ?? "0"))}
           />
         </td>
-        <td>{usd.format(ppiInitialRateReturn)}</td>
+        <td>{usd.format(yourInvestmentReturn)}</td>
       </tr>
       <tr className={styles.borderThick}>
         <th>account value</th>
-        <td>{formatPercentage(ppiAccountRatePercentage)}</td>
+        <td>{formatPercentage(accountValuePercentage)}</td>
+        <td>{usd.format(accountValue)}</td>
+        <td>{usd.format(accountValueReturn)}</td>
+      </tr>
+      <tr>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
+      </tr>
+      <tr>
+        <th>account performance</th>
         <td>
-          <input
-            type="number"
-            value={ppiAccountRateInvestment}
-            onChange={(e) =>
-              setPpiAccountRateInvestment(Number(e.target.value))
+          <CurrencyInput
+            placeholder="Please enter a percentage"
+            defaultValue={accountPerformance}
+            suffix={"%"}
+            onValueChange={(value) =>
+              setAccountPerformance(parseInt(value ?? "0"))
             }
           />
         </td>
-        <td>{usd.format(ppiAccountRateReturn)}</td>
       </tr>
       <tr>
         <th>actual rate</th>
-        <td>
-          {formatPercentage(
-            ((ppiAccountRateReturn + ppiInitialRateReturn) /
-              ppiAccountRateInvestment) *
-              100
-          )}
-        </td>
+        <td>{formatPercentage((totalReturn / accountValue) * 100)}</td>
         <td></td>
-        <td>{usd.format(ppiAccountRateReturn + ppiInitialRateReturn)}</td>
-      </tr>
-      <tr>
-        <td></td>
-      </tr>
-      <tr>
-        <td></td>
-      </tr>
-      <tr>
-        <th>acct performanc</th>
-        <td>15%</td>
+        <td>{usd.format(totalReturn)}</td>
       </tr>
     </table>
   );

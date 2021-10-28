@@ -5,7 +5,6 @@ import { Calc } from "./calc";
 export const Main: NextPage = () => {
   return (
     <main className={styles.main}>
-      <h1 className={styles.title}>Welcome to the site</h1>
       <Calc />
     </main>
   );

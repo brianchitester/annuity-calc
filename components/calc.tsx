@@ -81,7 +81,7 @@ export const Calc: FC = () => {
       </tr>
       <tr>
         <th>actual rate</th>
-        <td>{formatPercentage(percentageRate === NaN ? percentageRate : 0)}</td>
+        <td>{formatPercentage(percentageRate !== NaN ? percentageRate : 0)}</td>
         <td></td>
         <td>{usd.format(totalReturn)}</td>
       </tr>

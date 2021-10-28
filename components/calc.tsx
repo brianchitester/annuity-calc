@@ -68,12 +68,11 @@ export const Calc: FC = () => {
       <tr>
         <th>account performance</th>
         <td>
-          <CurrencyInput
-            placeholder="Please enter a percentage"
-            defaultValue={"10"}
-            suffix={"%"}
-            onValueChange={(value) =>
-              setAccountPerformance(parseInt(value ?? "0"))
+          <input
+            type="text"
+            value={accountPerformance}
+            onChange={(e) =>
+              setAccountPerformance(parseInt(e.target.value ?? "0"))
             }
           />
         </td>

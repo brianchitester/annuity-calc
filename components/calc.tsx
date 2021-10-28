@@ -14,7 +14,7 @@ export const Calc: FC = () => {
   const flatRatePercentage = 0.95;
   const ppiInitialRatePercentage = 0.48;
   const accountValuePercentage = 0.47;
-  const [yourInvestment, setYourInvestment] = useState(0);
+  const [yourInvestment, setYourInvestment] = useState(100000);
   const [accountPerformance, setAccountPerformance] = useState(15);
 
   const accountValue =
@@ -69,14 +69,20 @@ export const Calc: FC = () => {
         <th>account performance</th>
         <td>
           <input
+            className={styles.perfInput}
             type="text"
             value={accountPerformance}
             onChange={(e) =>
               setAccountPerformance(
-                parseInt(e.target.value === "" ? "0" : e.target.value)
+                parseInt(
+                  e.target.value === "" || e.target.value === "-"
+                    ? "0"
+                    : e.target.value
+                )
               )
             }
           />
+          <span>%</span>
         </td>
       </tr>
       <tr>

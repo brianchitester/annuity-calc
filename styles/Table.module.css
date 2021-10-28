@@ -20,5 +20,9 @@
 }
 
 .calcTable input {
-  width: 80px;
+  width: 75px;
+}
+
+.calcTable .perfInput {
+  width: 30px;
 }

@@ -72,7 +72,9 @@ export const Calc: FC = () => {
             type="text"
             value={accountPerformance}
             onChange={(e) =>
-              setAccountPerformance(parseInt(e.target.value ?? "0"))
+              setAccountPerformance(
+                parseInt(e.target.value === "" ? "0" : e.target.value)
+              )
             }
           />
         </td>
